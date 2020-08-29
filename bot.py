@@ -27,7 +27,7 @@ logger.addHandler(handler)
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
-@bot.command(name='dice', help='Simulates rolling dice(s). The first argument is the number of 6 sided dices (default 1), the second argument is the number of sides on a dice (default 6).')
+@bot.command(name='dice', help='Simulates rolling dice(s).')
 async def dice(ctx, number_of_dice: int = 1, number_of_sides: int = 6):
     dice = [
         str(random.choice(range(1, number_of_sides + 1)))
@@ -44,9 +44,9 @@ async def dice(ctx, number_of_dice: int = 1, number_of_sides: int = 6):
 #        print(f'Creating a new channel: {channel_name}')
 #        await guild.create_text_channel(channel_name)
 
-@bot.command(name='ping', help='are you still alive?')
+@bot.command(name='ping', help='Are you still alive?\nhttps://www.youtube.com/watch?v=nfRlrV8awo0')
 async def ping(ctx):
-    await ctx.send('pong!')
+    await ctx.send('pong! :ping_pong:')
 
 @bot.event
 async def on_member_join(member):
@@ -66,9 +66,11 @@ async def on_member_join(member):
 # INVITE_MEMBER => 321, member
 # INVITE_AKTIVISTA2020 => 3, aktivista2020
 
-#@bot.event
-#async def on_command_error(ctx, error):
-#    if isinstance(error, commands.errors.CheckFailure):
-#        await ctx.send('You do not have the correct role for this command.')
+@bot.event
+async def on_command_error(ctx, error):
+    if isinstance(error, commands.errors.CheckFailure):
+        await ctx.send('You do not have the correct role for this command.')
+    if isinstance(error, commands.errors.CommandNotFound):
+        await ctx.send('Command not found. Use `!help` for a command overview.')
 
 bot.run(TOKEN)
