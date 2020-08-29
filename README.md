@@ -39,8 +39,8 @@ python3 bot.py
 
 ```bash
 docker build -t bot .
-docker run -it -v $(pwd):/opt bot # bash/zsh
-docker run -it -v (pwd):/opt bot
+docker run --rm -it -v $(pwd):/opt bot # bash/zsh
+docker run --rm -it -v (pwd):/opt bot
 ```
 
 [virtualenv]: https://docs.python.org/3/library/venv.html
