@@ -27,8 +27,8 @@ logger.addHandler(handler)
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
 
-@bot.command(name='roll_dice', help='Simulates rolling dice(s). The first argument is the number of 6 sided dices (default 1), the second argument is the number of sides on a dice (default 6).')
-async def roll(ctx, number_of_dice: int = 1, number_of_sides: int = 6):
+@bot.command(name='dice', help='Simulates rolling dice(s). The first argument is the number of 6 sided dices (default 1), the second argument is the number of sides on a dice (default 6).')
+async def dice(ctx, number_of_dice: int = 1, number_of_sides: int = 6):
     dice = [
         str(random.choice(range(1, number_of_sides + 1)))
         for _ in range(number_of_dice)
