@@ -57,14 +57,14 @@ async def on_member_join(member):
     print(await guild.invites())
     print(guild.roles)
     # get welcome channel
-    channel = discord.utils.get(guild.channels, name=DISCORD_CHANNEL)
+    channel = discord.utils.get(guild.channels, name=CHANNEL)
     # send welcome message to channel
     await channel.send(f'Hey und herzlich willkommen {member.mention}, schön, dass du den Weg zu unserem Server gefunden hast! Dies ist eine kleine Oase für Aces, Aros, Menschen in den jeweiligen Spektren und natürlich auch für alle Menschen, die questioning sind :palm_tree:. Wir freuen uns sehr, dass du hier bist :cake:. Klicke dich durch die Channel, die sich direkt unter {channel.mention} befinden, für mehr Infos. :sunflower:\nWenn du offene Fragen hast, schreibe einfach in diesen Channel oder wende dich jederzeit an eine Person des Server-Teams (in orange). :cherry_blossom:')
 
 # hash map?
 # invite_links => [number_of_uses, role]
-# DISCORD_INVITE_MEMBER => 321, member
-# DISCORD_INVITE_AKTIVISTA2020 => 3, aktivista2020
+# INVITE_MEMBER => 321, member
+# INVITE_AKTIVISTA2020 => 3, aktivista2020
 
 #@bot.event
 #async def on_command_error(ctx, error):
