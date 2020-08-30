@@ -2,7 +2,6 @@
 import os
 import random
 import logging
-
 import discord
 from discord.ext import commands
 from dotenv import load_dotenv
@@ -15,13 +14,15 @@ INVITE_MEMBER = os.getenv('DISCORD_INVITE_MEMBER')
 INVITE_AKTIVISTA = os.getenv('DISCORD_INVITE_AKTIVISTA')
 ROLE_MEMBER = os.getenv('DISCORD_ROLE_MEMBER')
 ROLE_AKTIVISTA = os.getenv('DISCORD_ROLE_AKTIVISTA')
+DEBUG_LEVEL = os.getenv('DEBUG_LEVEL')
+DEBUG_FILE = os.getenv('DEBUG_FILE')
 
 bot = commands.Bot(command_prefix='!')
 
 # https://discordpy.readthedocs.io/en/latest/logging.html
 logger = logging.getLogger('discord')
-logger.setLevel(logging.WARNING)
-handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+logger.setLevel(DEBUG_LEVEL)
+handler = logging.FileHandler(filename=DEBUG_FILE, encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
 
