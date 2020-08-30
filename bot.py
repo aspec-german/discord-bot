@@ -12,13 +12,15 @@ TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
 CHANNEL = os.getenv('DISCORD_CHANNEL')
 INVITE_MEMBER = os.getenv('DISCORD_INVITE_MEMBER')
-INVITE_AKTIVISTA2020 = os.getenv('DISCORD_INVITE_AKTIVISTA2020')
+INVITE_AKTIVISTA = os.getenv('DISCORD_INVITE_AKTIVISTA')
+ROLE_MEMBER = os.getenv('DISCORD_ROLE_MEMBER')
+ROLE_AKTIVISTA = os.getenv('DISCORD_ROLE_AKTIVISTA')
 
 bot = commands.Bot(command_prefix='!')
 
 # https://discordpy.readthedocs.io/en/latest/logging.html
 logger = logging.getLogger('discord')
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARNING)
 handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
 handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
 logger.addHandler(handler)
@@ -53,7 +55,7 @@ async def on_member_join(member):
     # get guild
     guild = discord.utils.get(bot.guilds, name=GUILD)
     # get invites and roles
-    # TODO give role member / aktivista2020 according to invite link
+    # TODO give role ROLE_MEMBER / ROLE_AKTIVISTA according to invite link
     print(await guild.invites())
     print(guild.roles)
     # get welcome channel
@@ -63,8 +65,8 @@ async def on_member_join(member):
 
 # hash map?
 # invite_links => [number_of_uses, role]
-# INVITE_MEMBER => 321, member
-# INVITE_AKTIVISTA2020 => 3, aktivista2020
+# INVITE_MEMBER => 321, ROLE_MEMBER
+# INVITE_AKTIVISTA => 3, ROLE_AKTIVISTA
 
 @bot.event
 async def on_command_error(ctx, error):
