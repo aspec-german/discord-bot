@@ -17,6 +17,7 @@ ROLE_AKTIVISTA = os.getenv('DISCORD_ROLE_AKTIVISTA')
 DEBUG_LEVEL = os.getenv('DISCORD_DEBUG_LEVEL')
 DEBUG_FILE = os.getenv('DISCORD_DEBUG_FILE')
 
+# TODO adjust?
 bot = commands.Bot(command_prefix='!')
 
 # https://discordpy.readthedocs.io/en/latest/logging.html
@@ -38,56 +39,25 @@ async def on_ready():
     invites = await guild.invites()
     for i in invites:
         dict_invites[i.code] = i.uses
-    #print(dict_invites)
-    #print(dict_roles)
 
-@bot.command(name='dice', help='Simulates rolling dice(s).')
-async def dice(ctx, number_of_dice: int = 1, number_of_sides: int = 6):
+@bot.command(name='dice', help='Simulates rolling dice(s), e.g. `!dice 2 4`')
+async def dice(ctx, number_of_dices: int = 1, number_of_sides: int = 6):
     dice = [
         str(random.choice(range(1, number_of_sides + 1)))
-        for _ in range(number_of_dice)
+        for _ in range(number_of_dices)
     ]
     await ctx.send(', '.join(dice))
-
-#@bot.command(name='create_channel', help='admin: create channel')
-#@commands.has_role('admin')
-#async def create_channel(ctx, channel_name='test'):
-#    guild = ctx.guild
-#    existing_channel = discord.utils.get(guild.channels, name=channel_name)
-#    if not existing_channel:
-#        print(f'Creating a new channel: {channel_name}')
-#        await guild.create_text_channel(channel_name)
 
 @bot.command(name='ping', help='Are you still alive?\nhttps://www.youtube.com/watch?v=nfRlrV8awo0')
 async def ping(ctx):
     await ctx.send('pong! :ping_pong:')
 
-#@bot.command(name='invites', help='get all invites')
-#async def invites(ctx):
-#    guild = discord.utils.get(bot.guilds, name=GUILD)
-#    invites = await guild.invites()
-#    # will print discord box
-#    #invites = await bot.fetch_invite('https://discord.gg/pBzMeWc')
-#    print(invites)
-#    for i in invites:
-#        # NOTE i.channel.name not needed
-#        dict_invites[i.code] = i.uses
-#    print(dict_invites)
-#    await ctx.send(dict_invites)
-#
-#@bot.command(name='roles', help='get all roles')
-#async def roles(ctx):
-#    guild = discord.utils.get(bot.guilds, name=GUILD)
-#    roles = guild.roles
-#    print(roles)
-#    for r in roles:
-#        print(r.name)
-#    await ctx.send(roles)
-
 @bot.event
 async def on_member_join(member):
     # get guild
     guild = discord.utils.get(bot.guilds, name=GUILD)
+    # get log channel
+    channel = discord.utils.get(guild.channels, name=CHANNEL)
     # build dict_invites_new
     invites_new = await guild.invites()
     dict_invites_new = {}
@@ -101,10 +71,8 @@ async def on_member_join(member):
             # add role
             await member.add_roles(discord.utils.get(guild.roles, name=dict_roles[i]))
             print(f'added role "{dict_roles[i]}" to {member.name}')
-    # get welcome channel
-    channel = discord.utils.get(guild.channels, name=CHANNEL)
-    # send welcome message to channel
-    await channel.send(f'Hey und herzlich willkommen {member.mention}, schön, dass du den Weg zu unserem Server gefunden hast! Dies ist eine kleine Oase für Aces, Aros, Menschen in den jeweiligen Spektren und natürlich auch für alle Menschen, die questioning sind :palm_tree:. Wir freuen uns sehr, dass du hier bist :cake:. Klicke dich durch die Channel, die sich direkt unter {channel.mention} befinden, für mehr Infos. :sunflower:\nWenn du offene Fragen hast, schreibe einfach in diesen Channel oder wende dich jederzeit an eine Person des Server-Teams (in orange). :cherry_blossom:')
+            # send log message to channel
+            await channel.send(f'added role "{dict_roles[i]}" to {member.name}')
 
 @bot.event
 async def on_command_error(ctx, error):
