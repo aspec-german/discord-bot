@@ -29,16 +29,16 @@ logger.addHandler(handler)
 
 # if ready, create dict_invites and dict_roles
 dict_invites = {}
-dict_roles = {}
-dict_roles[INVITE_MEMBER] = ROLE_MEMBER
-dict_roles[INVITE_AKTIVISTA] = ROLE_AKTIVISTA
+dict_roles = {
+    INVITE_MEMBER: ROLE_MEMBER,
+    INVITE_AKTIVISTA: ROLE_AKTIVISTA,
+}
 @bot.event
 async def on_ready():
     print(f'{bot.user.name} has connected to Discord!')
     guild = discord.utils.get(bot.guilds, name=GUILD)
     invites = await guild.invites()
-    for i in invites:
-        dict_invites[i.code] = i.uses
+    dict_invites = {i.code: i.uses for i in invites}
 
 @bot.command(name='dice', help='Simulates rolling dice(s), e.g. `!dice 2 4`')
 async def dice(ctx, number_of_dices: int = 1, number_of_sides: int = 6):
@@ -60,9 +60,7 @@ async def on_member_join(member):
     channel = discord.utils.get(guild.channels, name=CHANNEL)
     # build dict_invites_new
     invites_new = await guild.invites()
-    dict_invites_new = {}
-    for i in invites_new:
-        dict_invites_new[i.code] = i.uses
+    dict_invites_new = {i.code: i.uses for i in invites_new}
     # compare uses
     for i in dict_invites:
         if dict_invites_new[i] > dict_invites[i]:
