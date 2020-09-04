@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 GUILD = os.getenv('DISCORD_GUILD')
-CHANNEL = os.getenv('DISCORD_CHANNEL')
+CHANNEL = os.getenv('DISCORD_LOG_CHANNEL')
 INVITE_MEMBER = os.getenv('DISCORD_INVITE_MEMBER')
 INVITE_AKTIVISTA = os.getenv('DISCORD_INVITE_AKTIVISTA')
 ROLE_MEMBER = os.getenv('DISCORD_ROLE_MEMBER')
@@ -17,8 +17,7 @@ ROLE_AKTIVISTA = os.getenv('DISCORD_ROLE_AKTIVISTA')
 DEBUG_LEVEL = os.getenv('DISCORD_DEBUG_LEVEL')
 DEBUG_FILE = os.getenv('DISCORD_DEBUG_FILE')
 
-# TODO adjust?
-bot = commands.Bot(command_prefix='!')
+bot = commands.Bot(command_prefix='?')
 
 # https://discordpy.readthedocs.io/en/latest/logging.html
 logger = logging.getLogger('discord')
@@ -40,7 +39,7 @@ async def on_ready():
     invites = await guild.invites()
     dict_invites = {i.code: i.uses for i in invites}
 
-@bot.command(name='dice', help='Simulates rolling dice(s), e.g. `!dice 2 4`')
+@bot.command(name='dice', help='Simulates rolling dice(s), e.g. `?dice 2 4`')
 async def dice(ctx, number_of_dices: int = 1, number_of_sides: int = 6):
     dice = [
         str(random.choice(range(1, number_of_sides + 1)))
@@ -50,7 +49,7 @@ async def dice(ctx, number_of_dices: int = 1, number_of_sides: int = 6):
 
 @bot.command(name='ping', help='Are you still alive?\nhttps://www.youtube.com/watch?v=nfRlrV8awo0')
 async def ping(ctx):
-    await ctx.send('pong! :ping_pong:')
+    await ctx.send('pong? :ping_pong:')
 
 @bot.event
 async def on_member_join(member):
@@ -68,15 +67,14 @@ async def on_member_join(member):
             dict_invites.update({i: dict_invites_new[i]})
             # add role
             await member.add_roles(discord.utils.get(guild.roles, name=dict_roles[i]))
-            print(f'added role "{dict_roles[i]}" to {member.name}')
             # send log message to channel
-            await channel.send(f'added role "{dict_roles[i]}" to {member.name}')
+            await channel.send(f'added role "{dict_roles[i]}" to "{member.name}"')
 
 @bot.event
 async def on_command_error(ctx, error):
     if isinstance(error, commands.errors.CheckFailure):
         await ctx.send('You do not have the correct role for this command.')
     if isinstance(error, commands.errors.CommandNotFound):
-        await ctx.send('Command not found. Use `!help` for a command overview.')
+        await ctx.send('Command not found. Use `?help` for a command overview.')
 
 bot.run(TOKEN)
