@@ -50,17 +50,17 @@ docker run --rm -it -v (pwd):/opt bot
 
 ## Development / Contribution
 
-Create a virtualenv as explained in [Installation][] above.  
-Then use the following commands to install the packages in this `.venv`:
+Create a virtualenv and install the requirements as explained in
+[Installation][] above.
+
+Happy coding! :tada:
+
+If you're done, use `pip3 freeze` to regenerate the
+`requirements.txt` and create a merge request :wink:
 
 ```bash
-pip3 install discord.py python-dotenv
 pip3 freeze >requirements.txt
 ```
-
-Happy coding! :tada:  
-If you're done, use `pip3 freeze` again to generate a new
-`requirements.txt` and create a merge request :wink:
 
 [server]: https://aktivista.net/2020/06/13/die-aspec-community-in-zeiten-von-corona-und-darueber-hinaus/
 [invitebot]: https://top.gg/bot/480240313525600267
