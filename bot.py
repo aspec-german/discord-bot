@@ -135,7 +135,7 @@ async def on_member_remove(member):
     embed = discord.Embed(
         title='Member left',
         description="{} joined {} ago".format(member.mention, humanize.precisedelta(dt.datetime.utcnow() - member.joined_at)),
-        timestamp=member.joined_at if member.joined_at else dt.datetime.utcnow(),
+        timestamp=dt.datetime.utcnow(),
     )
     embed.set_footer(text="User ID: " + str(member.id))
     embed.set_author(name=member, icon_url=member.avatar_url)
