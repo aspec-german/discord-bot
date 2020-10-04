@@ -68,6 +68,74 @@ async def dice(ctx, number_of_dices: int = 1, number_of_sides: int = 6):
 async def ping(ctx):
     await ctx.send('pong? :ping_pong:')
 
+#@bot.command(name='invite', help='Create invite and add role(s)')
+#@commands.has_role(ROLE_ADMIN)
+#async def create_invite(ctx, channel='', max_age: int = 0, max_uses: int = 0, temporary: bool = False, unique: bool = True):
+#    f = 'invite'
+#    print(f'{f}: auth success')
+#    guild = ctx.guild
+#    if not channel:
+#        c = guild.channel
+#    else:
+#        c = discord.utils.get(guild.channels, name=channel)
+#    if not c:
+#        print(f'{f}: no such channel "{c}", abort')
+#    else:
+#        print(f'{f}: using channel "{c}"')
+#        link = await c.create_invite()
+#        if not link:
+#            print(f'{f}: couldn\'t create link, abort')
+#        else:
+#            print(f'{f}: Here is an instant invite to your server: {link}')
+#            await ctx.send("Here is an instant invite to your server: " + link)
+#
+#@bot.command(name='invite_role', help='Modify invite roles')
+#@commands.has_role(ROLE_ADMIN)
+#async def invite_role(ctx, invite='', roles=''):
+#    f = 'invite_role'
+#    print(f'{f}: auth success')
+#    if not invite or not roles:
+#        await ctx.send(f'{f}: current dict: "{dict_roles}"')
+#    else:
+#        if dict_roles[invite]:
+#            dict_roles.update({invite: roles})
+#            # TODO
+#            #set_key(dotenv_path, invite, roles)
+#            print(f'{f}: modify roles of invite "{invite}" to: "{roles}"')
+#            await ctx.send(f'invite_role: modify roles of invite "{invite}" to: "{roles}"')
+#        else:
+#            print(f'{f}: no such invite "invite"')
+#            await ctx.send(f'invite_role: no such invite "invite"')
+#
+#@bot.command(name='greet', help='Print or modify the greet message')
+#@commands.has_role(ROLE_ADMIN)
+#async def greet(ctx, msg=''):
+#    f = 'greet'
+#    print(f'{f}: auth success')
+#    print(GREETING)
+#    print(f'{GREETING}')
+#    if not msg:
+#        await ctx.send(f'current greeting is:\n{GREETING}')
+#    else:
+#        GREETING = msg
+#        set_key(dotenv_path, 'DISCORD_GREETING', msg)
+#        await ctx.send(f'changed greeting to:\n{GREETING}')
+
+@bot.command(name='purge', help='Purge the last x messages in this channel')
+@commands.has_role(ROLE_ADMIN)
+async def purge(ctx, number: int = 1):
+    f = 'purge'
+    print(f'{f}: auth success')
+
+@bot.command(name='kick', help='Kick user (multiple accounts, ...)')
+@commands.has_role(ROLE_ADMIN)
+async def kick(ctx, member: discord.Member):
+    f = 'kick'
+    print(f'{f}: auth success')
+
+# ban
+# kickban?
+
 # events
 @bot.event
 async def on_member_join(member):
@@ -142,6 +210,12 @@ async def on_member_remove(member):
     roles = [ r.mention for r in member.roles ]
     embed.add_field(name="Roles", value=', '.join(roles))
     await join_leave_channel.send(embed=embed)
+
+@bot.event
+async def on_member_update(before, after):
+    f = 'on_member_update'
+    print(f'{f}: {before}')
+    print(f'{f}: {after}')
 
 @bot.event
 async def on_command_error(ctx, error):
