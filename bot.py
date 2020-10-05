@@ -8,6 +8,7 @@ import humanize
 from discord.ext import commands
 from dotenv import load_dotenv, set_key
 from os.path import join, dirname
+from time import gmtime, strftime
 
 dotenv_path = join(dirname(__file__), '.env')
 
@@ -45,7 +46,8 @@ dict_roles = {
 }
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} has connected to Discord and is connected to the following guilds:')
+    t = strftime("%F-%H-%M-%S %z", gmtime())
+    print(f'{t} {bot.user.name} has connected to Discord and is connected to the following guilds:')
     print(bot.guilds)
     # fill dict_invites
     guild = discord.utils.get(bot.guilds, name=GUILD)
@@ -71,7 +73,8 @@ async def ping(ctx):
 # events
 @bot.event
 async def on_member_join(member):
-    f = 'on_member_join'
+    t = strftime("%F-%H-%M-%S %z", gmtime())
+    f = t+' on_member_join'
     # get guild
     guild = discord.utils.get(bot.guilds, name=GUILD)
     if not guild:
@@ -100,7 +103,7 @@ async def on_member_join(member):
         print(f'{f}: no invites found, abort')
     dict_invites_new = {i.code: i.uses for i in invites_new}
     # compare uses
-    for i in dict_invites:
+    for i in dict_invites_new:
         if dict_invites_new[i] > dict_invites[i]:
             embed.add_field(name="Invite Link", value=i)
             embed.add_field(name="Roles", value=dict_roles[i])
@@ -122,7 +125,8 @@ async def on_member_join(member):
 
 @bot.event
 async def on_member_remove(member):
-    f = 'on_member_remove'
+    t = strftime("%F-%H-%M-%S %z", gmtime())
+    f = t+' on_member_remove'
     # get guild
     guild = discord.utils.get(bot.guilds, name=GUILD)
     if not guild:
